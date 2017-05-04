@@ -324,7 +324,6 @@ CCallableReconUpdate *CGHostDBMySQL :: ThreadedReconUpdate( uint32_t hostcounter
 	return Callable;
 }
 
-
 CCallableCommandList *CGHostDBMySQL :: ThreadedCommandList( )
 {
 	void *Connection = GetIdleConnection( );
@@ -338,7 +337,18 @@ CCallableCommandList *CGHostDBMySQL :: ThreadedCommandList( )
 	return Callable;
 }
 
+CCallableAnnounceList *CGHostDBMySQL :: ThreadedAnnounceList( )
+{
+    void *Connection = GetIdleConnection( );
 
+    if( !Connection )
+                ++m_NumConnections;
+
+    CCallableAnnounceList *Callable = new CMySQLCallableAnnounceList( Connection, m_BotID, m_Server, m_Database, m_User, m_Password, m_Port, this );
+    CreateThread( Callable );
+        ++m_OutstandingCallables;
+    return Callable;
+}
 
 CCallableGameAdd *CGHostDBMySQL :: ThreadedGameAdd( string server, string map, string gamename, string ownername, uint32_t duration, uint32_t gamestate, string creatorname, string creatorserver, string savetype, vector<ChatEvent> lobbylog, vector<ChatEvent> gamelog )
 {
@@ -1149,6 +1159,36 @@ vector<string> MySQLCommandList( void *conn, string *error, uint32_t botid )
 		*error = mysql_error( (MYSQL *)conn );
 
 	return CommandList;
+}
+
+vector<string> MySQLAnnounceList( void *conn, string *error )
+{
+    vector<string> AnnounceList;
+    string Query = "SELECT text FROM stats_announces";
+
+    if( mysql_real_query( (MYSQL *)conn, Query.c_str( ), Query.size( ) ) != 0 )
+        *error = mysql_error( (MYSQL *)conn );
+    else
+    {
+        MYSQL_RES *Result = mysql_store_result( (MYSQL *)conn );
+
+        if( Result )
+        {
+            vector<string> Row = MySQLFetchRow( Result );
+
+            while( Row.size( ) == 1 )
+            {
+                AnnounceList.push_back( Row[0] );
+                Row = MySQLFetchRow( Result );
+            }
+
+            mysql_free_result( Result );
+        }
+        else
+            *error = mysql_error( (MYSQL *)conn );
+    }
+
+    return AnnounceList;
 }
 
 uint32_t MySQLGameAdd( void *conn, string *error, uint32_t botid, string server, string map, string gamename, string ownername, uint32_t duration, uint32_t gamestate, string creatorname, string creatorserver, string savetype, vector<ChatEvent> lobbylog, vector<ChatEvent> gamelog )
@@ -2839,6 +2879,15 @@ void CMySQLCallableCommandList :: operator( )( )
 	Close( );
 }
 
+void CMySQLCallableAnnounceList :: operator( )( )
+{
+    Init( );
+
+    if( m_Error.empty( ) )
+        m_Result = MySQLAnnounceList( m_Connection, &m_Error );
+
+    Close( );
+}
 
 void CMySQLCallableGameAdd :: operator( )( )
 {

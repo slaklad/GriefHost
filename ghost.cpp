@@ -433,6 +433,10 @@ CGHost :: CGHost( CConfig *CFG )
 
 	m_CallableSpoofList = NULL;
 	m_LastSpoofRefreshTime = 0;
+
+    m_CallableAnnounceList = NULL;
+    m_LastAnnounceRefreshTime = 0;
+
 	
 	CONSOLE_Print( "[GHOST] opening primary database" );
 
@@ -1530,6 +1534,25 @@ bool CGHost :: Update( long usecBlock )
 		lock.unlock( );
 	}
 	
+
+    // refresh announce list
+
+    if( !m_CallableAnnounceList && GetTime( ) - m_LastAnnounceRefreshTime >= 1200 )
+        m_CallableAnnounceList = m_DB->ThreadedAnnounceList( );
+
+    if( m_CallableAnnounceList && m_CallableAnnounceList->GetReady( ) )
+    {
+        boost::mutex::scoped_lock lock( m_AnnounceMutex );
+
+        m_AnnounceList = m_CallableAnnounceList->GetResult( );
+        m_DB->RecoverCallable( m_CallableAnnounceList );
+        delete m_CallableAnnounceList;
+        m_CallableAnnounceList = NULL;
+        m_LastAnnounceRefreshTime = GetTime( );
+
+        lock.unlock( );
+    }
+
 	//clean the deny table every two minutes
 	
 	if( GetTime( ) - m_LastDenyCleanTime >= 120 )
@@ -1770,6 +1793,9 @@ void CGHost :: SetConfigs( CConfig *CFG )
     m_AllowAnyConnect = CFG->GetInt( "bot_allowanyconnect", 0 ) == 0 ? false : true;
     m_Stage = CFG->GetInt( "bot_stage", 0 ) == 0 ? false : true;
     m_ShowWaitingMessage = CFG->GetInt( "bot_showwaitingmessage", 0) == 0 ? false : true;
+
+    m_Announce = CFG->GetInt( "bot_announce", 0) == 0 ? false : true;
+    m_AnnounceInterval = CFG->GetInt( "bot_announceinterval", 15 ) * 60;
 }
 
 void CGHost :: ExtractScripts( )

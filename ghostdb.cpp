@@ -128,6 +128,12 @@ vector<string> CGHostDB :: CommandList( )
 	return vector<string>( );
 }
 
+vector<string> CGHostDB :: AnnounceList( )
+{
+    return vector<string>( );
+}
+
+
 uint32_t CGHostDB :: GameAdd( string server, string map, string gamename, string ownername, uint32_t duration, uint32_t gamestate, string creatorname, string creatorserver, string savetype, vector<ChatEvent> lobbylog, vector<ChatEvent> gamelog )
 {
 	return 0;
@@ -332,6 +338,11 @@ CCallableReconUpdate *CGHostDB :: ThreadedReconUpdate( uint32_t hostcounter, uin
 CCallableCommandList *CGHostDB :: ThreadedCommandList( )
 {
 	return NULL;
+}
+
+CCallableAnnounceList *CGHostDB :: ThreadedAnnounceList( )
+{
+    return NULL;
 }
 
 CCallableGameAdd *CGHostDB :: ThreadedGameAdd( string server, string map, string gamename, string ownername, uint32_t duration, uint32_t gamestate, string creatorname, string creatorserver, string savetype, vector<ChatEvent> lobbylog, vector<ChatEvent> gamelog )
@@ -558,6 +569,12 @@ CCallableCommandList :: ~CCallableCommandList( )
 {
 	// don't delete anything in m_Result here, it's the caller's responsibility
 }
+
+CCallableAnnounceList :: ~CCallableAnnounceList( )
+{
+    // don't delete anything in m_Result here, it's the caller's responsibility
+}
+
 
 CCallableGameAdd :: ~CCallableGameAdd( )
 {

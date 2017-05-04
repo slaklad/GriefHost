@@ -53,6 +53,7 @@ class CSaveGame;
 class CConfig;
 class CCallableCommandList;
 class CCallableSpoofList;
+class CCallableAnnounceList;
 struct DenyInfo;
 struct GameCreateRequest;
 struct QueuedSpoofAdd;
@@ -222,6 +223,13 @@ public:
 
 	deque<HostNameInfo> m_HostNameCache;	// host name lookup cache
 	boost::mutex m_HostNameCacheMutex;
+
+    bool m_Announce;
+    uint32_t m_AnnounceInterval; // Announce interval time
+    boost::mutex m_AnnounceMutex;
+    vector<string> m_AnnounceList; 		// donators can opt to spoof their name
+    uint32_t m_LastAnnounceRefreshTime;		// refresh spoof list every 2 hours
+    CCallableAnnounceList *m_CallableAnnounceList; // spoof list refresh in progress
 
     bool m_ShowWaitingMessage;
 
