@@ -2300,6 +2300,17 @@ CGamePlayer *CBaseGame :: EventPlayerJoined( CPotentialPlayer *potential, CIncom
 		return NULL;
 	}
 
+    // check if the new player's name is invalid
+
+    if( joinPlayer->GetName(  ).find( "|c" ) != string :: npos )
+    {
+        CONSOLE_Print( "[GAME: " + m_GameName + "] player [" + joinPlayer->GetName( ) + "|" + potential->GetExternalIPString( ) + "] is trying to join the game but has an invalid name" );
+        // SendAllChat( m_GHost->m_Language->TryingToJoinTheGameButTaken( joinPlayer->GetName( ) ) );
+        potential->Send( m_Protocol->SEND_W3GS_REJECTJOIN( REJECTJOIN_FULL ) );
+        potential->SetDeleteMe( true );
+        return NULL;
+    }
+
 	// check if the new player's name is the same as the virtual host name
 
 	if( joinPlayer->GetName( ) == m_VirtualHostName )
@@ -2320,9 +2331,9 @@ CGamePlayer *CBaseGame :: EventPlayerJoined( CPotentialPlayer *potential, CIncom
 		potential->SendBannedInfo( NULL, "score" );
 		m_GHost->DenyIP( potential->GetExternalIPString( ), 30000, "score out of range" );
 		return NULL;
-	}
+    }
 
-	// check if the new player's name is already taken
+    // check if the new player's name is already taken
 
 	if( GetPlayerFromName( joinPlayer->GetName( ), false ) )
 	{
