@@ -230,6 +230,7 @@ public:
     vector<string> m_AnnounceList; 		// donators can opt to spoof their name
     uint32_t m_LastAnnounceRefreshTime;		// refresh spoof list every 2 hours
     CCallableAnnounceList *m_CallableAnnounceList; // spoof list refresh in progress
+    uint32_t m_LastAnnounceTime;
 
     bool m_ShowWaitingMessage;
 

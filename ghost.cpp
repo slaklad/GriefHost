@@ -436,7 +436,7 @@ CGHost :: CGHost( CConfig *CFG )
 
     m_CallableAnnounceList = NULL;
     m_LastAnnounceRefreshTime = 0;
-
+    m_LastAnnounceTime = 0;
 	
 	CONSOLE_Print( "[GHOST] opening primary database" );
 
@@ -1552,6 +1552,27 @@ bool CGHost :: Update( long usecBlock )
 
         lock.unlock( );
     }
+
+
+    if( !m_LastAnnounceTime && GetTime( ) - m_LastAnnounceTime >= m_AnnounceInterval && m_AnnounceList.size() > 0 ) {
+
+        string m_AnnounceText = m_AnnounceList[rand() % (m_AnnounceList.size() - 1)];
+
+        boost::mutex::scoped_lock gamesLock( m_GamesMutex );
+
+        if(m_CurrentGame)
+            m_CurrentGame->SendAllChat("[Announce] " + m_AnnounceText);
+
+        for( vector<CBaseGame *> :: iterator i = m_Games.begin( ); i != m_Games.end( ); )
+        {
+            (*i)->SendAllChat("[Announce] " + m_AnnounceText);
+        }
+
+        gamesLock.unlock( );
+
+        m_LastAnnounceTime = GetTime();
+    }
+
 
 	//clean the deny table every two minutes
 	
