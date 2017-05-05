@@ -1799,8 +1799,7 @@ void CGHost :: SetConfigs( CConfig *CFG )
     m_FastReconnect = CFG->GetInt( "bot_fastreconnect", 0 ) == 0 ? false : true;
     m_CloseSinglePlayer = CFG->GetInt( "bot_closesingleplayer", 1 ) == 0 ? false : true;
 	m_ShowScoreOnJoin = CFG->GetInt( "bot_scoreonjoin", 0 ) == 0 ? false : true;
-	m_Gamelist = CFG->GetInt( "bot_gamelist", 0 ) == 0 ? false : true;
-    m_AMH = CFG->GetInt( "bot_amh", 0 ) == 0 ? false : true;
+    m_Gamelist = CFG->GetInt( "bot_gamelist", 0 ) == 0 ? false : true;
     
     m_Stream = CFG->GetInt( "bot_stream", 0 ) == 0 ? false : true;
 	m_StreamPort = CFG->GetInt( "bot_streamport", m_HostPort * 2 );
