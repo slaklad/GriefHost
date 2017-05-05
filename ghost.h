@@ -37,7 +37,6 @@ class CTCPServer;
 class CTCPSocket;
 class CGPSProtocol;
 class CGCBIProtocol;
-class CAMHProtocol;
 class CGameProtocol;
 class CStreamPlayer;
 class CStagePlayer;
@@ -79,8 +78,7 @@ public:
 	vector<CStagePlayer *> m_StagePlayers;	// vector of players waiting for a game
 	vector<string> m_SlapPhrases;           // vector of phrases
 	CGPSProtocol *m_GPSProtocol;
-	CGCBIProtocol *m_GCBIProtocol;
-	CAMHProtocol *m_AMHProtocol;
+    CGCBIProtocol *m_GCBIProtocol;
 	CGameProtocol *m_GameProtocol;
 	CCRC32 *m_CRC;							// for calculating CRC's
 	CSHA1 *m_SHA;							// for calculating SHA1's

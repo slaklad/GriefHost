@@ -40,7 +40,6 @@
 #include "gameplayer.h"
 #include "gameprotocol.h"
 #include "gcbiprotocol.h"
-#include "amhprotocol.h"
 #include "gpsprotocol.h"
 #include "game_base.h"
 #include "game.h"
@@ -421,8 +420,7 @@ CGHost :: CGHost( CConfig *CFG )
 	m_ReconnectSocket = NULL;
 	m_StreamSocket = NULL;
 	m_GPSProtocol = new CGPSProtocol( );
-	m_GCBIProtocol = new CGCBIProtocol( );
-	m_AMHProtocol = new CAMHProtocol( );
+    m_GCBIProtocol = new CGCBIProtocol( );
 	m_GameProtocol = new CGameProtocol( this );
 	m_CRC = new CCRC32( );
 	m_CRC->Initialize( );
@@ -771,8 +769,7 @@ CGHost :: ~CGHost( )
 
 	delete m_GPSProtocol;
 	delete m_GCBIProtocol;
-	delete m_GameProtocol;
-	delete m_AMHProtocol;
+    delete m_GameProtocol;
 	delete m_CRC;
 	delete m_SHA;
 
