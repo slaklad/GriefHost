@@ -1551,7 +1551,7 @@ bool CGHost :: Update( long usecBlock )
     }
 
 
-    if( !m_LastAnnounceTime && GetTime( ) - m_LastAnnounceTime >= m_AnnounceInterval && m_AnnounceList.size() > 0 ) {
+    if( m_Announce && GetTime( ) - m_LastAnnounceTime >= m_AnnounceInterval && m_AnnounceList.size() > 0 ) {
 
         string m_AnnounceText = m_AnnounceList[rand() % (m_AnnounceList.size() - 1)];
 
