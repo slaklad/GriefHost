@@ -1459,7 +1459,11 @@ bool CBaseGame :: Update( void *fd, void *send_fd )
 		}
 
 		// see if we can handle any pending reconnects
-		if( !m_GHost->m_PendingReconnects.empty( ) && GetTicks( ) - m_LastReconnectHandleTime > 500 )
+		
+		// changed by h3rmit
+		// we shouldn't try to reconnect players after the gameover timer has started
+		
+		if( m_GameOverTime == 0 && !m_GHost->m_PendingReconnects.empty( ) && GetTicks( ) - m_LastReconnectHandleTime > 500 )
 		{
 			m_LastReconnectHandleTime = GetTicks( );
 
