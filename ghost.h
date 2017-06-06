@@ -53,10 +53,32 @@ class CConfig;
 class CCallableCommandList;
 class CCallableSpoofList;
 class CCallableAnnounceList;
-struct DenyInfo;
-struct GameCreateRequest;
+
+
+// fix error C2027 in Windows Visual Studio:
+
+struct DenyInfo {
+	uint32_t Time;
+	uint32_t Duration;
+	uint32_t Count;
+};
+
+struct GameCreateRequest {
+	unsigned char gameState;
+	bool saveGame;
+	string gameName;
+	string ownerName;
+	string creatorName;
+	string creatorServer;
+	bool whisper;
+};
+
+struct HostNameInfo {
+	string ip;
+	string hostname;
+};
+
 struct QueuedSpoofAdd;
-struct HostNameInfo;
 
 struct GProxyReconnector {
 	CTCPSocket *socket;
@@ -274,27 +296,6 @@ public:
 	void AsynchronousMapLoadHelper( CConfig *CFG, string nCFGFile );
 
 	string HostNameLookup( string ip );
-};
-
-struct DenyInfo {
-	uint32_t Time;
-	uint32_t Duration;
-	uint32_t Count;
-};
-
-struct GameCreateRequest {
-	unsigned char gameState;
-	bool saveGame;
-	string gameName;
-	string ownerName;
-	string creatorName;
-	string creatorServer;
-	bool whisper;
-};
-
-struct HostNameInfo {
-	string ip;
-	string hostname;
 };
 
 #endif

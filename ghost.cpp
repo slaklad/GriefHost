@@ -47,7 +47,12 @@
 #include "stageplayer.h"
 
 #include <signal.h>
+
+//Not compatible with Windows:
+#ifndef WIN32
 #include <execinfo.h> //to generate stack trace-like thing on exception
+#endif
+
 #include <stdlib.h>
 
 #ifdef WIN32
@@ -58,7 +63,7 @@
 #include <stormlib/StormLib.h>
 
 #ifdef WIN32
- #include <windows.h>
+ #include <Windows.h>
  #include <winsock.h>
 #endif
 
@@ -143,6 +148,8 @@ void SignalCatcher( int s )
 
 void handler()
 {
+	#ifndef WIN32
+	
     void *trace_elems[20];
     int trace_elem_count(backtrace( trace_elems, 20 ));
     char **stack_syms(backtrace_symbols( trace_elems, trace_elem_count ));
@@ -151,7 +158,9 @@ void handler()
         std::cout << stack_syms[i] << "\n";
     }
     free( stack_syms );
-
+	
+	#endif
+	
     exit(1);
 }
 
@@ -1835,8 +1844,8 @@ void CGHost :: ExtractScripts( )
 			{
 				char *SubFileData = new char[FileLength];
 				DWORD BytesRead = 0;
-
-				if( SFileReadFile( SubFile, SubFileData, FileLength, &BytesRead ) )
+				// fix for using latest stormlib
+				if( SFileReadFile( SubFile, SubFileData, FileLength, &BytesRead, 0 ) )
 				{
 					CONSOLE_Print( "[GHOST] extracting Scripts\\common.j from MPQ file to [" + m_MapCFGPath + "common.j]" );
 					UTIL_FileWrite( m_MapCFGPath + "common.j", (unsigned char *)SubFileData, BytesRead );
@@ -1863,7 +1872,7 @@ void CGHost :: ExtractScripts( )
 				char *SubFileData = new char[FileLength];
 				DWORD BytesRead = 0;
 
-				if( SFileReadFile( SubFile, SubFileData, FileLength, &BytesRead ) )
+				if( SFileReadFile( SubFile, SubFileData, FileLength, &BytesRead, 0 ) )
 				{
 					CONSOLE_Print( "[GHOST] extracting Scripts\\blizzard.j from MPQ file to [" + m_MapCFGPath + "blizzard.j]" );
 					UTIL_FileWrite( m_MapCFGPath + "blizzard.j", (unsigned char *)SubFileData, BytesRead );
