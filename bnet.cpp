@@ -49,7 +49,7 @@ using namespace boost :: filesystem;
 // CBNET
 //
 
-CBNET :: CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNLSServer, uint16_t nBNLSPort, uint32_t nBNLSWardenCookie, string nCDKeyROC, string nCDKeyTFT, string nCountryAbbrev, string nCountry, uint32_t nLocaleID, string nUserName, string nUserPassword, string nKeyOwnerName, string nFirstChannel, string nRootAdmin, char nCommandTrigger, bool nHoldFriends, bool nHoldClan, bool nPublicCommands, unsigned char nWar3Version, BYTEARRAY nEXEVersion, BYTEARRAY nEXEVersionHash, string nPasswordHashType, string nPVPGNRealmName, uint32_t nMaxMessageLength, uint32_t nHostCounterID )
+CBNET :: CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNLSServer, uint16_t nBNLSPort, uint32_t nBNLSWardenCookie, string nCDKeyROC, string nCDKeyTFT, string nCountryAbbrev, string nCountry, uint32_t nLocaleID, string nUserName, string nUserPassword, string nKeyOwnerName, string nFirstChannel, string nRootAdmin, vector<string> nBannedCommandList, char nCommandTrigger, bool nHoldFriends, bool nHoldClan, bool nPublicCommands, unsigned char nWar3Version, BYTEARRAY nEXEVersion, BYTEARRAY nEXEVersionHash, string nPasswordHashType, string nPVPGNRealmName, uint32_t nMaxMessageLength, uint32_t nHostCounterID )
 {
 	// todotodo: append path seperator to Warcraft3Path if needed
 
@@ -116,6 +116,7 @@ CBNET :: CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNL
 	m_FirstChannel = nFirstChannel;
 	m_RootAdmin = nRootAdmin;
 	transform( m_RootAdmin.begin( ), m_RootAdmin.end( ), m_RootAdmin.begin( ), (int(*)(int))tolower );
+	m_BannedCommandList = nBannedCommandList;
 	m_CommandTrigger = nCommandTrigger;
 	m_War3Version = nWar3Version;
 	m_EXEVersion = nEXEVersion;
@@ -1248,7 +1249,14 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 
 //	if( m_Server == "hive.entgaming.net" && User == "clan.enterprise" )
 //		ForceRoot = true;
-
+	
+	// Check if the command is disabled
+	if(IsCommandBanned(Command))
+	{
+		CONSOLE_Print( "[BNET: " + m_ServerAlias + "] user [" + User + "] sent banned command [" + Message + "]" );
+		return;
+	}
+	
 	if( IsAdmin( User ) || IsRootAdmin( User ) || ForceRoot )
 	{
 		CONSOLE_Print( "[BNET: " + m_ServerAlias + "] admin [" + User + "] sent command [" + Message + "]" );
@@ -2567,6 +2575,19 @@ void CBNET :: UnqueueChatCommand( string chatCommand )
 void CBNET :: UnqueueGameRefreshes( )
 {
 	UnqueuePackets( CBNETProtocol :: SID_STARTADVEX3 );
+}
+
+bool CBNET :: IsCommandBanned( string command )
+{
+	transform( command.begin( ), command.end( ), command.begin( ), (int(*)(int))tolower );
+
+        for( vector<string> :: iterator i = m_BannedCommandList.begin( ); i != m_BannedCommandList.end( ); ++i )
+        {
+                if( *i == command )
+                        return true;
+        }
+
+        return false;
 }
 
 bool CBNET :: IsAdmin( string name )
