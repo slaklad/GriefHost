@@ -1461,6 +1461,16 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 	string Command = command;
 	string Payload = payload;
 
+	//Check if command is enabled.
+	for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); ++i )
+	{
+			if( (*i)->IsCommandBanned( Command ) )
+			{
+				CONSOLE_Print( "[GAME: " + m_GameName + "] user [" + User + "] sent baned command [" + command + "]" );
+				return false;
+			}
+	}
+	
 	bool AdminCheck = false;
 
 	for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); ++i )

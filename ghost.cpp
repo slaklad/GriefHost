@@ -600,7 +600,26 @@ CGHost :: CGHost( CConfig *CFG )
 		string PasswordHashType = CFG->GetString( Prefix + "custom_passwordhashtype", string( ) );
 		string PVPGNRealmName = CFG->GetString( Prefix + "custom_pvpgnrealmname", "PvPGN Realm" );
 		uint32_t MaxMessageLength = CFG->GetInt( Prefix + "custom_maxmessagelength", 200 );
+		string BannedCommands = CFG->GetString( Prefix + "bannedcommands", string( ) );
+		vector<string> BannedCommandList;
+		
+		if(!BannedCommands.empty())
+		{
+			transform( BannedCommands.begin( ), BannedCommands.end( ), BannedCommands.begin( ), (int(*)(int))tolower );
+	        	stringstream SS;
+        		string s;
+        		SS << BannedCommands;
 
+        		while( !SS.eof( ) )
+	        	{
+        	        	SS >> s;
+				BannedCommandList.push_back(s);
+	        	}
+
+			CONSOLE_Print( "[GHOST] Disabled commands from Ghost: " + BannedCommands );
+		}
+		
+		
 		if( Server.empty( ) )
 			break;
 
@@ -639,7 +658,7 @@ CGHost :: CGHost( CConfig *CFG )
 #endif
 		}
 
-		m_BNETs.push_back( new CBNET( this, Server, ServerAlias, BNLSServer, (uint16_t)BNLSPort, (uint32_t)BNLSWardenCookie, CDKeyROC, CDKeyTFT, CountryAbbrev, Country, LocaleID, UserName, UserPassword, KeyOwnerName, FirstChannel, RootAdmin, BNETCommandTrigger[0], HoldFriends, HoldClan, PublicCommands, War3Version, EXEVersion, EXEVersionHash, PasswordHashType, PVPGNRealmName, MaxMessageLength, i ) );
+		m_BNETs.push_back( new CBNET( this, Server, ServerAlias, BNLSServer, (uint16_t)BNLSPort, (uint32_t)BNLSWardenCookie, CDKeyROC, CDKeyTFT, CountryAbbrev, Country, LocaleID, UserName, UserPassword, KeyOwnerName, FirstChannel, RootAdmin, BannedCommandList, BNETCommandTrigger[0], HoldFriends, HoldClan, PublicCommands, War3Version, EXEVersion, EXEVersionHash, PasswordHashType, PVPGNRealmName, MaxMessageLength, i ) );
 	}
 
 	if( m_BNETs.empty( ) )

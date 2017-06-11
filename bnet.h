@@ -84,6 +84,7 @@ private:
 	vector<PairedVerifyUserCheck> m_PairedVerifyUserChecks;
 	CCallableAdminList *m_CallableAdminList;		// threaded database admin list in progress
 	vector<string> m_Admins;						// vector of cached admins
+	vector<string> m_BannedCommandList;				//vector for banned commands
 	bool m_Exiting;									// set to true and this class will be deleted next update
 	string m_Server;								// battle.net server to connect to
 	string m_ServerIP;								// battle.net server to connect to (the IP address so we don't have to resolve it every time we connect)
@@ -130,7 +131,7 @@ private:
 	bool m_LastInviteCreation;						// whether the last invite received was for a clan creation (else, it was for invitation response)
 
 public:
-	CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNLSServer, uint16_t nBNLSPort, uint32_t nBNLSWardenCookie, string nCDKeyROC, string nCDKeyTFT, string nCountryAbbrev, string nCountry, uint32_t nLocaleID, string nUserName, string nUserPassword, string nKeyOwnerName, string nFirstChannel, string nRootAdmin, char nCommandTrigger, bool nHoldFriends, bool nHoldClan, bool nPublicCommands, unsigned char nWar3Version, BYTEARRAY nEXEVersion, BYTEARRAY nEXEVersionHash, string nPasswordHashType, string nPVPGNRealmName, uint32_t nMaxMessageLength, uint32_t nHostCounterID );
+	CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNLSServer, uint16_t nBNLSPort, uint32_t nBNLSWardenCookie, string nCDKeyROC, string nCDKeyTFT, string nCountryAbbrev, string nCountry, uint32_t nLocaleID, string nUserName, string nUserPassword, string nKeyOwnerName, string nFirstChannel, string nRootAdmin, vector<string> nBannedCommandList, char nCommandTrigger, bool nHoldFriends, bool nHoldClan, bool nPublicCommands, unsigned char nWar3Version, BYTEARRAY nEXEVersion, BYTEARRAY nEXEVersionHash, string nPasswordHashType, string nPVPGNRealmName, uint32_t nMaxMessageLength, uint32_t nHostCounterID );
 	~CBNET( );
 
 	bool GetExiting( )					{ return m_Exiting; }
@@ -193,6 +194,7 @@ public:
 
 	bool IsAdmin( string name );
 	bool IsRootAdmin( string name );
+	bool IsCommandBanned( string command );
 	void AddAdmin( string name );
 	void RemoveAdmin( string name );
 	void HoldFriends( CBaseGame *game );
