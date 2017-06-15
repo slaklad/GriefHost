@@ -2190,6 +2190,35 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 			else
 				QueueChatCommand( "WARDEN STATUS --- Not connected to BNLS server.", User, Whisper );
 		}
+
+		// Ability to use whisper for game under creation: !start, !close, !open, !sp, etc command
+		else if (m_GHost->m_CurrentGame)
+		{
+			// !start
+			if (Command == "start")
+				m_GHost->m_CurrentGame->CommandStart(Payload);
+
+			// !sp
+			else if(Command == "sp")
+				m_GHost->m_CurrentGame->CommandSp();
+			
+			// !abort
+			else if(Command == "abort" || Command == "a")
+				m_GHost->m_CurrentGame->CommandAbort();
+			
+			// !clearhcl
+			else if(Command == "clearhcl")
+				m_GHost->m_CurrentGame->CommandClearhcl();
+			
+			else if(Command == "hcl")
+				m_GHost->m_CurrentGame->CommandHcl(Payload);
+			
+			else if(Command == "close")
+				m_GHost->m_CurrentGame->CommandClose(Payload);
+			
+			else if(Command == "swap")
+				m_GHost->m_CurrentGame->CommandSwap(Payload);
+		}
 	}
 	else
 		CONSOLE_Print( "[BNET: " + m_ServerAlias + "] non-admin [" + User + "] sent command [" + Message + "]" );
@@ -2292,6 +2321,9 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 			m_PairedVerifyUserChecks.push_back( PairedVerifyUserCheck( Whisper ? User : string( ), m_GHost->m_DB->ThreadedVerifyUser( User, Payload, m_Server )));
 		}
 	}
+	//asd
+	//if(User == m_PVPGNRealmName)
+	//m_GHost->m_CurrentGame;
 }
 
 void CBNET :: UxReconnected( )
