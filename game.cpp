@@ -1516,6 +1516,31 @@ void CGame :: CommandAlias(string Payload, CGamePlayer *player)
 	}
 }
 
+void CGame :: CommandOpen(string Payload)
+{
+	if( m_GameLoading && m_GameLoaded )
+		return;
+			
+	// open as many slots as specified, e.g. "5 10" opens slots 5 and 10
+
+	stringstream SS;
+	SS << Payload;
+
+	while( !SS.eof( ) )
+	{
+		uint32_t SID;
+		SS >> SID;
+
+		if( SS.fail( ) )
+		{
+			CONSOLE_Print( "[GAME: " + m_GameName + "] bad input to open command" );
+			break;
+		}
+		else
+			OpenSlot( (unsigned char)( SID - 1 ), true );
+	}
+}
+
 void CGame :: CommandClose(string Payload)
 {
 	if(Payload.empty( ) || m_GameLoading || m_GameLoaded )
@@ -1746,20 +1771,21 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 	string Command = command;
 	string Payload = payload;
 
-	//Check if command is enabled.
-	for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); ++i )
-	{
-			if( (*i)->IsCommandBanned( Command ) )
-			{
-				CONSOLE_Print( "[GAME: " + m_GameName + "] user [" + User + "] sent baned command [" + command + "]" );
-				return false;
-			}
-	}
-
 	bool AdminCheck = IsAdmin(player);
 
 	bool RootAdminCheck = IsRootAdmin(player);
 
+	//Check if command is enabled, rootadmin can send anything
+	if(!RootAdminCheck)
+		for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); ++i )
+		{
+				if( (*i)->IsCommandBanned( Command ) )
+				{
+					CONSOLE_Print( "[GAME: " + m_GameName + "] user [" + User + "] sent baned command [" + command + "]" );
+					return false;
+				}
+		}
+	
 	if( player->GetSpoofed( ) && ( AdminCheck || RootAdminCheck || IsOwner( User ) ) )
 	{
 		CONSOLE_Print( "[GAME: " + m_GameName + "] admin [" + User + "] sent command [" + Command + "] with payload [" + Payload + "]" );
@@ -2531,32 +2557,12 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 				else
 					SendAllChat( "Restrictions on joining tournament players has been disabled. Use the command again to re-enable." );
 			}
-
-			//
+			
 			// !OPEN (open slot)
-			//
 
-			else if( Command == "open" && !Payload.empty( ) && !m_GameLoading && !m_GameLoaded )
-			{
-				// open as many slots as specified, e.g. "5 10" opens slots 5 and 10
+			else if( Command == "open" )
+				CommandOpen(Payload);
 
-				stringstream SS;
-				SS << Payload;
-
-				while( !SS.eof( ) )
-				{
-					uint32_t SID;
-					SS >> SID;
-
-					if( SS.fail( ) )
-					{
-						CONSOLE_Print( "[GAME: " + m_GameName + "] bad input to open command" );
-						break;
-					}
-					else
-						OpenSlot( (unsigned char)( SID - 1 ), true );
-				}
-			}
 
 			// !OPENALL
 

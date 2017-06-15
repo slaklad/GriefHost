@@ -323,6 +323,7 @@ public:
 	virtual void CommandHcl(string Payload){}
 	virtual void CommandClose(string Payload){}
 	virtual void CommandOwner(string Payload, CGamePlayer *player){}
+	virtual void CommandOpen(string Payload){}
 
 
 	// other functions

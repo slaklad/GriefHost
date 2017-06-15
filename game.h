@@ -143,6 +143,7 @@ public:
 	virtual void CommandClose(string Payload);
 	virtual void CommandClearhcl();
 	virtual void CommandOwner(string Payload, CGamePlayer *player);
+	virtual void CommandOpen(string Payload);
 
 };
 

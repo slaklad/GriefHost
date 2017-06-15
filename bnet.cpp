@@ -1250,8 +1250,8 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 //	if( m_Server == "hive.entgaming.net" && User == "clan.enterprise" )
 //		ForceRoot = true;
 	
-	// Check if the command is disabled
-	if(IsCommandBanned(Command))
+	// Check if the command is enabled, rootadmin can send anything
+	if(!IsRootAdmin( User ) && IsCommandBanned(Command))
 	{
 		CONSOLE_Print( "[BNET: " + m_ServerAlias + "] user [" + User + "] sent banned command [" + Message + "]" );
 		return;
@@ -2215,6 +2215,9 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 			
 			else if(Command == "close")
 				m_GHost->m_CurrentGame->CommandClose(Payload);
+			
+			else if(Command == "open")
+				m_GHost->m_CurrentGame->CommandOpen(Payload);
 			
 			else if(Command == "swap")
 				m_GHost->m_CurrentGame->CommandSwap(Payload);
