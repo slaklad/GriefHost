@@ -538,7 +538,7 @@ protected:
 	bool m_Lobby;
 	uint32_t m_Result;
 public:
- CCallableGameUpdate( uint32_t id, string map, string gamename, string ownername, string creatorname, uint32_t players, string usernames, uint32_t slotsTotal, uint32_t totalPlayers, bool lobby, bool add ) : CBaseCallable( ), m_ID( id ), m_Map(map), m_GameName(gamename), m_OwnerName(ownername), m_CreatorName(creatorname), m_Add(add), m_Players(players), m_Usernames(usernames), m_SlotsTotal(slotsTotal), m_TotalPlayers(totalPlayers), m_Lobby( lobby ) { }
+ CCallableGameUpdate( uint32_t id, string map, string gamename, string ownername, string creatorname, uint32_t players, string usernames, uint32_t slotsTotal, uint32_t totalPlayers, bool lobby, bool add ) : CBaseCallable( ), m_ID( id ), m_Map(map), m_GameName(gamename), m_OwnerName(ownername), m_CreatorName(creatorname), m_Add(add), m_Players(players), m_Usernames(usernames), m_SlotsTotal(slotsTotal), m_TotalPlayers(totalPlayers), m_Lobby( lobby ), m_Result( 0 ) { }
 	virtual ~CCallableGameUpdate( );
 
 	virtual uint32_t GetResult( )				{ return m_Result; }
@@ -1316,8 +1316,8 @@ public:
         void dec4K(){--m_4K;}
         void inc5K(){++m_5K;}
         void dec5K(){--m_5K;}
-	void SetFB(){m_FB = true;}
-	void SetFD(){m_FD = true;}
+        void SetFB(){m_FB = true;}
+        void SetFD(){m_FD = true;}
         void incKS(){++m_KS;}
         void decKS(){--m_KS;}
         void incD(){++m_D;}
@@ -1334,7 +1334,7 @@ public:
         void decG(){--m_G;}
         void incBG(){++m_BG;}
         void decBG(){--m_BG;}
-	void SetMS(uint32_t nMS){nMS = m_MS;}
+        void SetMS(uint32_t nMS){m_MS=nMS;}
 };
 
 //

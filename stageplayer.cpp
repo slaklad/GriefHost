@@ -42,7 +42,7 @@
 // CStagePlayer
 //
 
-CStagePlayer :: CStagePlayer( CGameProtocol *nProtocol, CTCPSocket *nSocket, CGHost *nGHost ) : m_Protocol( nProtocol ), m_Socket( nSocket ), m_GHost( nGHost ), m_ConnectCheck( NULL ), m_Checked( false ), m_DeleteMe( false ), m_ConnectionTicks( GetTicks( ) ), m_LoadingStage( 0 ), m_LastStageTicks( GetTicks( ) ), m_MapOK( false ), m_LastPingTime( GetTime( ) ), m_Score( -10000.0 ), m_JoinTicks( 0 ), m_SpoofSent( false ), m_ScoreRange( 100.0 ), m_LastScoreRangeIncrease( GetTime( ) ), m_ScoreCheck( NULL ), m_MuteTicks( 0 )
+CStagePlayer :: CStagePlayer( CGameProtocol *nProtocol, CTCPSocket *nSocket, CGHost *nGHost ) : m_Protocol( nProtocol ), m_Socket( nSocket ), m_GHost( nGHost ), m_ConnectCheck( NULL ), m_Checked( false ), m_DeleteMe( false ), m_ConnectionTicks( GetTicks( ) ), m_LoadingStage( 0 ), m_LastStageTicks( GetTicks( ) ), m_MapOK( false ), m_LastPingTime( GetTime( ) ), m_Score( -10000.0 ), m_JoinTicks( 0 ), m_SpoofSent( false ), m_ScoreRange( 100.0 ), m_LastScoreRangeIncrease( GetTime( ) ), m_ScoreCheck( NULL ), m_MuteTicks( 0 ), m_VirtualPID( 1 ), m_ChatPID( 2 )
 {
 	if( nSocket )
 		m_CachedIP = nSocket->GetIPString( );
