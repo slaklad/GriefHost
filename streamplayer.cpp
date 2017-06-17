@@ -42,7 +42,7 @@
 // CStreamPlayer
 //
 
-CStreamPlayer :: CStreamPlayer( CGameProtocol *nProtocol, CTCPSocket *nSocket, CGHost *nGHost ) : m_Protocol( nProtocol ), m_Game( NULL ), m_Socket( nSocket ), m_GHost( nGHost ), m_ConnectCheck( NULL ), m_Checked( false ), m_DeleteMe( false ), m_ConnectionTicks( GetTicks( ) ), m_StreamPosition( 0 ), m_ActionsIndex( 0 ), m_LoadingStage( 0 ), m_LastStageTicks( GetTicks( ) ), m_MapOK( false ), m_FinishedLoading( false ), m_LastPingTime( GetTime( ) ), m_BeganStreaming( false )
+CStreamPlayer :: CStreamPlayer( CGameProtocol *nProtocol, CTCPSocket *nSocket, CGHost *nGHost ) : m_Protocol( nProtocol ), m_Game( NULL ), m_Socket( nSocket ), m_GHost( nGHost ), m_ConnectCheck( NULL ), m_Checked( false ), m_DeleteMe( false ), m_ConnectionTicks( GetTicks( ) ), m_StreamPosition( 0 ), m_ActionsIndex( 0 ), m_LoadingStage( 0 ), m_LastStageTicks( GetTicks( ) ), m_MapOK( false ), m_FinishedLoading( false ), m_LastPingTime( GetTime( ) ), m_BeganStreaming( false ), m_FakeStartTicks( 0 )
 {
 	if( nSocket )
 		m_CachedIP = nSocket->GetIPString( );

@@ -121,12 +121,29 @@ public:
 	virtual bool EventPlayerBotCommand( CGamePlayer *player, string command, string payload );
 	virtual void EventGameStarted( );
 	virtual bool IsGameDataSaved( );
+	virtual bool IsAdmin(CGamePlayer *player);
+	virtual bool IsRootAdmin(CGamePlayer *player);
 	virtual void SaveGameData( );
 	virtual void CloseGame( );
     virtual uint32_t GetGuess() {return m_Guess;}
     virtual void SetGuess( uint32_t nGuess )     { m_Guess = nGuess; }
     virtual void GetStatsUser( string *statsUser, string *statsRealm );
     virtual void InvalidActionNotify( string message );
+
+	//Command Functions eg: !start, callable from anywhere
+	virtual void CommandStart(string Payload);
+	virtual void CommandAbort();
+	virtual void CommandSynclimit(string Payload);
+	virtual void CommandSp();
+	virtual void CommandSwap(string Payload);
+	virtual void CommandAnnounce(string Payload);
+	virtual void CommandAlias(string Payload, CGamePlayer *player);
+	virtual void CommandAutostart(string Payload);
+	virtual void CommandHcl(string Payload);
+	virtual void CommandClose(string Payload);
+	virtual void CommandClearhcl();
+	virtual void CommandOwner(string Payload, CGamePlayer *player);
+	virtual void CommandOpen(string Payload);
 
 };
 

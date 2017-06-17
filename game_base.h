@@ -309,6 +309,23 @@ public:
 	virtual void EventGameStarted( );
 	virtual void EventGameLoaded( );
 
+	//Command functions Eg: !start implemented in game.cpp
+
+	virtual void CommandSynclimit(string Payload){}
+	virtual void CommandStart( string Payload){}
+	virtual void CommandSwap(string Payload){}
+	virtual void CommandAbort(){}
+	virtual void CommandSp(){}
+	virtual void CommandAnnounce(string Payload){}
+	virtual void CommandAlias(string Payload, CGamePlayer *player){}
+	virtual void CommandAutostart(string Payload){}
+	virtual void CommandClearhcl(){}
+	virtual void CommandHcl(string Payload){}
+	virtual void CommandClose(string Payload){}
+	virtual void CommandOwner(string Payload, CGamePlayer *player){}
+	virtual void CommandOpen(string Payload){}
+
+
 	// other functions
 
 	virtual unsigned char GetSIDFromPID( unsigned char PID );
@@ -373,11 +390,7 @@ public:
 	uint32_t m_Ticks; //game ticks when packet is sent
 	BYTEARRAY m_Packet;
 	
-	CStreamPacket( uint32_t nTicks, BYTEARRAY nPacket )
-	{
-		m_Ticks = nTicks;
-		m_Packet = nPacket;
-	}
+    CStreamPacket( uint32_t nTicks, BYTEARRAY nPacket ) : m_Packet( nPacket ), m_Ticks( nTicks ) { }
 	
 	~CStreamPacket( )
 	{

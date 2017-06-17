@@ -66,8 +66,7 @@ public:
 	// other functions
 
 private:
-	bool AssignLength( BYTEARRAY &content );
-	bool ValidateLength( BYTEARRAY &content );
+    bool AssignLength( BYTEARRAY &content );
 };
 
 #endif
