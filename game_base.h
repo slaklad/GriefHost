@@ -390,11 +390,7 @@ public:
 	uint32_t m_Ticks; //game ticks when packet is sent
 	BYTEARRAY m_Packet;
 	
-	CStreamPacket( uint32_t nTicks, BYTEARRAY nPacket )
-	{
-		m_Ticks = nTicks;
-		m_Packet = nPacket;
-	}
+    CStreamPacket( uint32_t nTicks, BYTEARRAY nPacket ) : m_Packet( nPacket ), m_Ticks( nTicks ) { }
 	
 	~CStreamPacket( )
 	{

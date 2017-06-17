@@ -422,14 +422,6 @@ void elo_recalculate_ratings(int num_players, float *player_ratings,
 	/* Calculate the probability for each player to win, ELO-style. */
 	elo_compute_expectations(num_teams, team_ratings, team_probs);
 
-	/* Debugging data */
-	for (i = 0; i < num_players; i++) {
-		int team = num_teams > 0 ? player_teams[i] : i;
-		/* dbg_msg(GGZ_DBG_STATS,
-			"Player %d has rating %f, expectation %f.", i,
-			team_ratings[team], team_probs[team]); */
-	}
-
 	/* Calculate new ratings for all players. */
 	for (i = 0; i < num_players; i++) {
 		int team = num_teams > 0 ? player_teams[i] : i;

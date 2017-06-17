@@ -53,7 +53,7 @@ void CBNCSUtilInterface :: Reset( string userName, string userPassword )
 	m_NLS = new NLS( userName, userPassword );
 }
 
-bool CBNCSUtilInterface :: HELP_SID_AUTH_CHECK( bool TFT, string war3Path, string keyROC, string keyTFT, string valueStringFormula, string mpqFileName, BYTEARRAY clientToken, BYTEARRAY serverToken )
+bool CBNCSUtilInterface :: HELP_SID_AUTH_CHECK( bool TFT, string &war3Path, string &keyROC, string &keyTFT, string valueStringFormula, string mpqFileName, BYTEARRAY &clientToken, BYTEARRAY &serverToken )
 {
     string FileWar3EXE = war3Path + "War3.exe";
     string FileStormDLL = war3Path + "Storm.dll";
@@ -140,12 +140,12 @@ bool CBNCSUtilInterface :: HELP_PvPGNPasswordHash( string userPassword )
 
 BYTEARRAY CBNCSUtilInterface :: CreateKeyInfo( string key, uint32_t clientToken, uint32_t serverToken )
 {
-	unsigned char Zeros[] = { 0, 0, 0, 0 };
 	BYTEARRAY KeyInfo;
 	CDKeyDecoder Decoder( key.c_str( ), key.size( ) );
 
 	if( Decoder.isKeyValid( ) )
 	{
+        unsigned char Zeros[] = { 0, 0, 0, 0 };
 		UTIL_AppendByteArray( KeyInfo, UTIL_CreateByteArray( (uint32_t)key.size( ), false ) );
 		UTIL_AppendByteArray( KeyInfo, UTIL_CreateByteArray( Decoder.getProduct( ), false ) );
 		UTIL_AppendByteArray( KeyInfo, UTIL_CreateByteArray( Decoder.getVal1( ), false ) );

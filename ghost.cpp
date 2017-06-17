@@ -181,7 +181,7 @@ void CONSOLE_Flush( )
 	if( logQueue.empty( ) )
 		return;
 
-	for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); it++) {
+    for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); ++it) {
 		cout << *it << endl;
 	}
 
@@ -203,7 +203,7 @@ void CONSOLE_Flush( )
 
 			if( !Log.fail( ) )
 			{
-				for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); it++) {
+                for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); ++it) {
 					Log << "[" << Time << "] " << *it << endl;
 				}
 				
@@ -214,7 +214,7 @@ void CONSOLE_Flush( )
 		{
 			if( gLog && !gLog->fail( ) )
 			{
-				for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); it++) {
+                for( vector<string>::iterator it = logQueue.begin( ); it != logQueue.end( ); ++it) {
 					*gLog << "[" << Time << "] " << *it << endl;
 				}
 				
@@ -891,7 +891,7 @@ bool CGHost :: Update( long usecBlock )
 		
 		if( !m_StagePlayers.empty( ) )
 		{
-			for( vector<CStagePlayer *> :: iterator i = m_StagePlayers.begin( ); i != m_StagePlayers.end( ); i++ )
+            for( vector<CStagePlayer *> :: iterator i = m_StagePlayers.begin( ); i != m_StagePlayers.end( ); ++i )
 				delete *i;
 			
 			m_StagePlayers.clear( );
@@ -1229,7 +1229,7 @@ bool CGHost :: Update( long usecBlock )
 				continue;
 			}
 			
-			i++;
+            ++i;
 		}
 	
 		lock.unlock();
@@ -2265,8 +2265,7 @@ string CGHost :: HostNameLookup( string ip )
 {
 	//try to find in cache first
 	boost::mutex::scoped_lock lockFind( m_HostNameCacheMutex );
-	for( deque<HostNameInfo> :: iterator i = m_HostNameCache.begin( ); i != m_HostNameCache.end( ); i++ )
-
+    for( deque<HostNameInfo> :: iterator i = m_HostNameCache.begin( ); i != m_HostNameCache.end( ); ++i )
 	{
 		if( i->ip == ip )
 			return i->hostname;
@@ -2281,8 +2280,8 @@ string CGHost :: HostNameLookup( string ip )
 		return "Unknown";
 
 	sin.sin_port = htons( 5555 ); //an arbitrary port since we're only interested in rdns
-	char host[NI_MAXHOST], service[NI_MAXSERV];
-	int s = getnameinfo( ( struct sockaddr * ) &sin, sizeof( sin ), host, NI_MAXHOST, service, NI_MAXSERV, NI_NUMERICSERV );
+    char host[NI_MAXHOST], service[NI_MAXSERV];
+    getnameinfo( ( struct sockaddr * ) &sin, sizeof( sin ), host, NI_MAXHOST, service, NI_MAXSERV, NI_NUMERICSERV );
 	string hostname( host );
 	memset( &sin, 0, sizeof( sin ) );
 
