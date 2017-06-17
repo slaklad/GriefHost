@@ -870,8 +870,7 @@ void CGamePlayer :: ProcessPackets( )
 				}
 			}
 			else if( Packet->GetID( ) == CGPSProtocol :: GPS_SUPPORT_EXTENDED )
-			{
-				uint32_t seconds = UTIL_ByteArrayToUInt32( Data, false, 4 );
+            {
 				m_GProxyExtended = true;
 				CONSOLE_Print( "[GAME: " + m_Game->GetGameName( ) + "] player [" + m_Name + "] is using GProxy Extended" );
             }

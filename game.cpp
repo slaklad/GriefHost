@@ -941,7 +941,7 @@ for( vector<PairedVerifyUserCheck> :: iterator i = m_PairedVerifyUserChecks.begi
 	{
 		// kick everyone on forfeit team
 		
-		for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+        for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 		{
 			if( *i && !(*i)->GetLeftMessageSent( ) )
 			{
@@ -1143,7 +1143,7 @@ void CGame :: EventPlayerDeleted( CGamePlayer *player )
 					uint32_t CountAlly = 0;
 					uint32_t CountEnemy = 0;
 
-					for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+                    for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 					{
 						if( *i && !(*i)->GetLeftMessageSent( ) )
 						{
@@ -1178,7 +1178,7 @@ void CGame :: EventPlayerDeleted( CGamePlayer *player )
 			uint32_t CountAlly = 0;
 			uint32_t CountEnemy = 0;
 
-			for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+            for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 			{
 				if( *i && !(*i)->GetLeftMessageSent( ) && *i != player )
 				{
@@ -1229,7 +1229,7 @@ void CGame :: EventPlayerDeleted( CGamePlayer *player )
 			// check how many leavers, by starting from start players and subtracting each non-leaver player
 			uint32_t m_NumLeavers = m_StartPlayers;
 			
-			for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+            for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 			{
 				if( *i && !(*i)->GetLeftMessageSent( ) && *i != player )
 					m_NumLeavers--;
@@ -1275,17 +1275,13 @@ bool CGame :: EventPlayerAction( CGamePlayer *player, CIncomingAction *action )
 
 		if( PacketLength > 0 )
 		{
-			uint32_t n = 0;
-			uint32_t p = 0;
-
-			unsigned int CurrentID = 255;
-			unsigned int PreviousID = 255;
-			
+            uint32_t n = 0;
+            unsigned int CurrentID = 255;
 			bool Failed = false;
 
 			while( n < PacketLength && !Failed )
 			{
-				PreviousID = CurrentID;
+                uint32_t p = 0;
 				CurrentID = (*ActionData)[n];
 
 				switch ( CurrentID )
@@ -1823,8 +1819,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 				// extract the slot and the skill
 				// e.g. "1 2" -> slot: "1", skill: "2"
 
-				uint32_t Slot;
-				uint32_t Skill = 1;
+                uint32_t Slot;
 				stringstream SS;
 				SS << Payload;
 				SS >> Slot;
@@ -1833,7 +1828,8 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 					CONSOLE_Print( "[GAME: " + m_GameName + "] bad input #1 to comp command" );
 				else
 				{
-					if( !SS.eof( ) )
+                    uint32_t Skill = 1;
+                    if( !SS.eof( ) )
 						SS >> Skill;
 
 					if( SS.fail( ) )
@@ -3618,9 +3614,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 			RandMax = UTIL_ToUInt64( Payload );
 		
 		if( RandMax <= RAND_MAX && RandMax >= 2 )
-		{
-			uint64_t RandResult = rand( ) % RandMax;
-		//	SendAllChat( "Random result: " + UTIL_ToString( RandResult ) + " (from 0 to " + UTIL_ToString( RandMax - 1 ) + ")." );
+        {
 			player->SetStatsDotASentTime( GetTime( ) );
 		}
 		else
@@ -3679,7 +3673,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 					OnlyPlayer = true;
                     char sid, team;
 					
-					for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+                    for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
                     {
 						if( *i && LastMatch != *i && !(*i)->GetLeftMessageSent( ) )
 						{
@@ -3794,7 +3788,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
                 uint32_t VotesNeeded = 0;
                 uint32_t Votes = 0;
 
-                for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+                for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
                 {
                     if( *i && Victim != *i && !(*i)->GetLeftMessageSent( ) )
                     {
@@ -3865,7 +3859,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 			uint32_t VotesNeeded = (uint32_t)ceil( (float) GetNumHumanPlayers( ) * 0.75 );
 			uint32_t Votes = 0;
 			
-			for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+            for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 			{
 				if( (*i)->GetDrawVote( ) )
 				{
@@ -3919,7 +3913,7 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 				int numVoted = 0;
 				int numTotal = 0;
 				
-				for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++)
+                for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i)
 				{
 					if( *i && !(*i)->GetLeftMessageSent( ) )
 					{
@@ -4061,7 +4055,7 @@ void CGame :: CloseGame( )
 
 bool CGame :: IsAutoBanned( string name )
 {
-	for( vector<string> :: iterator i = m_AutoBans.begin( ); i != m_AutoBans.end( ); i++ )
+    for( vector<string> :: iterator i = m_AutoBans.begin( ); i != m_AutoBans.end( ); ++i )
 	{
 		if( *i == name )
 			return true;

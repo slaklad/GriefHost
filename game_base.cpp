@@ -1444,7 +1444,7 @@ bool CBaseGame :: Update( void *fd, void *send_fd )
 		
 		if( m_GHost->m_ReconnectExtendedTime > 0 )
 		{
-			for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++ )
+            for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i )
 			{
 				CGamePlayer *p;
 				if( (*i)->GetDisconnected( ) && (*i)->GetGProxyExtended( ) && (*i)->GetTotalDisconnectTime( ) > m_GHost->m_ReconnectExtendedTime * 60 )
@@ -1481,7 +1481,7 @@ bool CBaseGame :: Update( void *fd, void *send_fd )
 					continue;
 				}
 
-				i++;
+                ++i;
 			}
 
 			lock.unlock();
@@ -2426,8 +2426,7 @@ CGamePlayer *CBaseGame :: EventPlayerJoined( CPotentialPlayer *potential, CIncom
 	// try to find a slot
 
 	unsigned char SID = 255;
-	unsigned char EnforcePID = 255;
-	unsigned char EnforceSID = 0;
+    unsigned char EnforcePID = 255;
 	CGameSlot EnforceSlot( 255, 0, 0, 0, 0, 0, 0 );
 
 	if( m_SaveGame )
@@ -2441,6 +2440,8 @@ CGamePlayer *CBaseGame :: EventPlayerJoined( CPotentialPlayer *potential, CIncom
 			if( (*i).second == joinPlayer->GetName( ) )
 				EnforcePID = (*i).first;
 		}
+
+        unsigned char EnforceSID = 0;
 
 		for( vector<CGameSlot> :: iterator i = m_EnforceSlots.begin( ); i != m_EnforceSlots.end( ); ++i )
 		{
@@ -3074,8 +3075,6 @@ void CBaseGame :: EventPlayerKeepAlive( CGamePlayer *player, uint32_t checkSum )
 	if( !FoundPlayer )
 		return;
 
-	bool AddToReplay = true;
-
 	for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i )
 	{
 		if( !(*i)->GetDeleteMe( ) && (*i)->GetCheckSums( )->front( ) != FirstCheckSum )
@@ -3140,8 +3139,7 @@ void CBaseGame :: EventPlayerKeepAlive( CGamePlayer *player, uint32_t checkSum )
 				// todotodo: it would be possible to split the game at this point and create a "new" game for each game state
 
 				CONSOLE_Print( "[GAME: " + m_GameName + "] can't kick desynced players because there is a tie, kicking all players instead" );
-				StopPlayers( m_GHost->m_Language->WasDroppedDesync( ) );
-				AddToReplay = false;
+                StopPlayers( m_GHost->m_Language->WasDroppedDesync( ) );
 			}
 			else
 			{
@@ -3182,11 +3180,6 @@ void CBaseGame :: EventPlayerKeepAlive( CGamePlayer *player, uint32_t checkSum )
 		if( !(*i)->GetDeleteMe( ) )
 			(*i)->GetCheckSums( )->pop( );
 	}
-
-	// add checksum to replay
-
-	/* if( m_Replay && AddToReplay )
-		m_Replay->AddCheckSum( FirstCheckSum ); */
 }
 
 void CBaseGame :: EventPlayerChatToHost( CGamePlayer *player, CIncomingChatPlayer *chatPlayer )
@@ -3761,9 +3754,9 @@ void CBaseGame :: EventGameStarted( )
 		BlankIP.push_back( 0 );
 		BlankIP.push_back( 0 );
 
-		for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); i++ )
+        for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i )
 		{
-			for( vector<CGamePlayer *> :: iterator j = m_Players.begin( ); j != m_Players.end( ); j++ )
+            for( vector<CGamePlayer *> :: iterator j = m_Players.begin( ); j != m_Players.end( ); ++j )
 			{
 				if( *i != *j )
 				{

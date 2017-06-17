@@ -1178,7 +1178,7 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 			SearchMessages.push_back( "is using Warcraft III in game" );
 			SearchMessages.push_back( "is using Warcraft III  in game" );
 
-			for( vector<string> :: iterator it = SearchMessages.begin( ); it != SearchMessages.end( ); it++ )
+            for( vector<string> :: iterator it = SearchMessages.begin( ); it != SearchMessages.end( ); ++it )
 			{
 				size_t pos = Message.find( *it );
 
@@ -1359,8 +1359,7 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 					// extract the maximum games, auto start players, and the game name
 					// e.g. "5 10 BattleShips Pro" -> maximum games: "5", auto start players: "10", game name: "BattleShips Pro"
 
-					uint32_t MaximumGames;
-					uint32_t AutoStartPlayers;
+                    uint32_t MaximumGames;
 					string GameName;
 					stringstream SS;
 					SS << Payload;
@@ -1370,6 +1369,7 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 						CONSOLE_Print( "[BNET: " + m_ServerAlias + "] bad input #1 to autohost command" );
 					else
 					{
+                        uint32_t AutoStartPlayers;
 						SS >> AutoStartPlayers;
 
 						if( SS.fail( ) || AutoStartPlayers == 0 )
@@ -1433,10 +1433,7 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 					// extract the maximum games, auto start players, minimum score, maximum score, and the game name
 					// e.g. "5 10 800 1200 BattleShips Pro" -> maximum games: "5", auto start players: "10", minimum score: "800", maximum score: "1200", game name: "BattleShips Pro"
 
-					uint32_t MaximumGames;
-					uint32_t AutoStartPlayers;
-					double MinimumScore;
-					double MaximumScore;
+                    uint32_t MaximumGames;
 					string GameName;
 					stringstream SS;
 					SS << Payload;
@@ -1446,18 +1443,21 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 						CONSOLE_Print( "[BNET: " + m_ServerAlias + "] bad input #1 to autohostmm command" );
 					else
 					{
+                        uint32_t AutoStartPlayers;
 						SS >> AutoStartPlayers;
 
 						if( SS.fail( ) || AutoStartPlayers == 0 )
 							CONSOLE_Print( "[BNET: " + m_ServerAlias + "] bad input #2 to autohostmm command" );
 						else
 						{
+                            double MinimumScore;
 							SS >> MinimumScore;
 
 							if( SS.fail( ) )
 								CONSOLE_Print( "[BNET: " + m_ServerAlias + "] bad input #3 to autohostmm command" );
 							else
 							{
+                                double MaximumScore;
 								SS >> MaximumScore;
 
 								if( SS.fail( ) )

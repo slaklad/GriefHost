@@ -227,7 +227,7 @@ bool CStagePlayer :: Update( void *fd )
 	{
 		m_SpoofSent = true;
 		
-		for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); i++ )
+        for( vector<CBNET *> :: iterator i = m_GHost->m_BNETs.begin( ); i != m_GHost->m_BNETs.end( ); ++i )
 		{
 			if( (*i)->GetServer( ) == m_Realm )
 				(*i)->QueueChatCommand( "/whois " + m_Name );

@@ -953,8 +953,7 @@ CDBBan *MySQLBanCheck( void *conn, string *error, uint32_t botid, string server,
 	string EscUser = MySQLEscapeString( conn, user );
 	string EscUserServer = MySQLEscapeString( conn, user + "@" + server );
 	string EscIP = MySQLEscapeString( conn, ip );
-	string EscHostName = MySQLEscapeString( conn, hostname );
-	string EscOwnerName = MySQLEscapeString( conn, ownername );
+    string EscHostName = MySQLEscapeString( conn, hostname );
 	bool WhiteList = false;
 	string Query;
 	
@@ -1893,9 +1892,7 @@ CDBTreePlayerSummary *MySQLTreePlayerSummaryCheck( void *conn, string *error, ui
 
 		if( Result )
 		{
-			vector<string> Row = MySQLFetchRow( Result );
-			uint32_t TotalGames = UTIL_ToUInt32( Row[0] );
-
+            vector<string> Row = MySQLFetchRow( Result );
 			if( Row.size( ) == 10 )
 			{
 				uint32_t TotalGames = UTIL_ToUInt32( Row[0] );
@@ -1946,9 +1943,7 @@ CDBIslandPlayerSummary *MySQLIslandPlayerSummaryCheck( void *conn, string *error
 
 		if( Result )
 		{
-			vector<string> Row = MySQLFetchRow( Result );
-			uint32_t TotalGames = UTIL_ToUInt32( Row[0] );
-
+            vector<string> Row = MySQLFetchRow( Result );
 			if( Row.size( ) == 9 )
 			{
 				uint32_t TotalGames = UTIL_ToUInt32( Row[0] );
