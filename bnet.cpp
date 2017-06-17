@@ -2198,31 +2198,67 @@ void CBNET :: BotCommand( string Message, string User, bool Whisper, bool ForceR
 		{
 			// !start
 			if (Command == "start")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandStart(Payload);
+				lock.unlock();
+			}
 
 			// !sp
 			else if(Command == "sp")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandSp();
+				lock.unlock();
+			}
 			
 			// !abort
 			else if(Command == "abort" || Command == "a")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandAbort();
+				lock.unlock();
+			}
 			
 			// !clearhcl
 			else if(Command == "clearhcl")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandClearhcl();
+				lock.unlock();
+			}
 			
+			// !hcl
 			else if(Command == "hcl")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandHcl(Payload);
+				lock.unlock();
+			}
 			
+			// !close
 			else if(Command == "close")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandClose(Payload);
+				lock.unlock();
+			}
 			
+			// !open
 			else if(Command == "open")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandOpen(Payload);
+				lock.unlock();
+			}
 			
+			// !swap
 			else if(Command == "swap")
+			{
+				boost::mutex::scoped_lock lock( m_GHost->m_GamesMutex );
 				m_GHost->m_CurrentGame->CommandSwap(Payload);
+				lock.unlock();
+			}
 		}
 	}
 	else
