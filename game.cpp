@@ -1276,13 +1276,12 @@ bool CGame :: EventPlayerAction( CGamePlayer *player, CIncomingAction *action )
 		if( PacketLength > 0 )
 		{
             uint32_t n = 0;
-            unsigned int CurrentID = 255;
 			bool Failed = false;
 
 			while( n < PacketLength && !Failed )
 			{
                 uint32_t p = 0;
-				CurrentID = (*ActionData)[n];
+                unsigned int CurrentID = (*ActionData)[n];
 
 				switch ( CurrentID )
 				{

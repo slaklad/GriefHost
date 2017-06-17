@@ -79,8 +79,7 @@ bool CStatsW3MMD :: ProcessAction( CIncomingAction *Action )
 					Key = UTIL_ExtractCString( *ActionData, i + 10 + MissionKey.size( ) );
 
 					if( ActionData->size( ) >= i + 15 + MissionKey.size( ) + Key.size( ) )
-					{
-						Value = BYTEARRAY( ActionData->begin( ) + i + 11 + MissionKey.size( ) + Key.size( ), ActionData->begin( ) + i + 15 + MissionKey.size( ) + Key.size( ) );
+                    {
 						string MissionKeyString = string( MissionKey.begin( ), MissionKey.end( ) );
                         string KeyString = string( Key.begin( ), Key.end( ) );
 
