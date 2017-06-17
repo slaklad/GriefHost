@@ -55,8 +55,7 @@ bool CStatsW3MMD :: ProcessAction( CIncomingAction *Action )
 	unsigned int i = 0;
 	BYTEARRAY *ActionData = Action->GetAction( );
 	BYTEARRAY MissionKey;
-	BYTEARRAY Key;
-	BYTEARRAY Value;
+    BYTEARRAY Key;
 
 	while( ActionData->size( ) >= i + 9 )
 	{
