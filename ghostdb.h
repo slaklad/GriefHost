@@ -1334,7 +1334,7 @@ public:
         void decG(){--m_G;}
         void incBG(){++m_BG;}
         void decBG(){--m_BG;}
-        void SetMS(uint32_t nMS){m_MS=nMS;}
+        void SetMS(uint32_t nMS){nMS = m_MS;}
 };
 
 //
